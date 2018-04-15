@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-4.0.xsd
+           http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+           http://www.springframework.org/schema/tx 
+           http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+	<context:component-scan base-package="com.demo"/>
+	
+	<aop:config proxy-target-class="true">
+	</aop:config>
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+		<property name="url" value="jdbc:sqlserver://localhost:1433;databaseName=HotelManagerSystem"/>
+		<property name="username" value="FBB"/>
+		<property name="password" value="123"/>		
+	</bean>
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		 <property name="mappingResources">
+			    <list>
+			      <value>com/entity/HotelInfo.hbm.xml</value>
+			      <value>com/entity/HotelManagerInfo.hbm.xml</value>
+			      <value>com/entity/ManagerInfo.hbm.xml</value>
+			      <value>com/entity/OrderItems.hbm.xml</value>
+			      <value>com/entity/RoomInfo.hbm.xml</value>
+			      <value>com/entity/UserInfo.hbm.xml</value>
+			    </list>
+		</property>
+		 <property name="hibernateProperties">
+			 <value>
+			      hibernate.dialect=org.hibernate.dialect.SQLServerDialect
+			      hibernate.hbm2ddl.auto=update
+			      hibernate.show_sql=true
+			      hibernate.format_sql=false
+			  </value>
+		 </property>
+	</bean>
+	<bean id="txManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<!--使用基于注解方式配置事务 -->
+	<tx:annotation-driven transaction-manager="txManager"/>
+	<bean id="managerDao" class="com.dao.ManagerDao"/>
+	<bean id="managerService" class="com.service.ManagerService">
+		<property name="managerDao" ref="managerDao"></property>
+	</bean>
+	<bean id="hotelManagerDao" class="com.dao.HotelManagerDao"/>
+	<bean id="hotelManagerService" class="com.service.HotelManagerService">
+		<property name="hotelManagerDao" ref="hotelManagerDao"></property>
+	</bean>
+	<bean id="userDao" class="com.dao.UserDao"/>
+	<bean id="userService" class="com.service.UserService">
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+	<bean id="roomDao" class="com.dao.RoomDao"/>
+	<bean id="roomService" class="com.service.RoomService">
+		<property name="roomDao" ref="roomDao"></property>
+	</bean>
+	<bean id="hotelDao" class="com.dao.HotelDao"/>
+	<bean id="hotelService" class="com.service.HotelService">
+		<property name="hotelDao" ref="hotelDao"></property>
+	</bean>
+	<bean id="orderDao" class="com.dao.OrderDao"/>
+	<bean id="orderService" class="com.service.OrderService">
+		<property name="orderDao" ref="orderDao"></property>
+	</bean>
+</beans>

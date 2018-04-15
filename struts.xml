@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "system11"
+    "struts-2.0.dtd">
+<struts>
+<!-- 默认的视图主题 -->
+    <constant name="struts.ui.theme" value="simple" />
+    <constant name="struts.objectFactory" value="spring" />
+    <!-- 让同一个action调用不同的方法 -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" /> 
+ 	<package name="Manager" extends="struts-default">
+		<action name="managerLogin" class="com.action.ManagerAction" method="login">
+			<result name="success" type="chain">findManager</result>			
+		</action>
+		<action name="findManager" class="com.action.ManagerAction" method="findManager">
+			<result name="findManager">/manager.jsp</result>
+		</action>
+	</package>
+	<package name="User" extends="struts-default">
+		<interceptors>
+			<interceptor name="LoginInterceptor" class="com.interceptor.LoginInterceptor"></interceptor>
+		</interceptors>
+		<action name="userLogin" class="com.action.UserAction" method="login">
+			<result name="login_success" type="chain">roomList</result>
+			<result name="login_fail">/userLogin.jsp</result>
+		</action>
+		<action name="userRegister" class="com.action.UserAction" method="register">
+			<result name="register_success">/userLogin.jsp</result>
+		</action>
+		<action name="showUser" class="com.action.UserAction" method="showUser">
+			<result name="showUser">/user.jsp</result>
+		</action>
+		<action name="updateUser" class="com.action.UserAction" method="updateUser">
+			<result name="update" type="chain">showUser</result>
+		</action>
+		<action name="allUser" class="com.action.UserAction" method="allUser">
+			<result name="allUser">/showAllUser.jsp</result>
+		</action>
+	</package>
+	<package name="Room"  extends="struts-default">
+		<action name="roomList" class="com.action.RoomAction" method="roomList">
+			<result name="success">/home.jsp</result>
+		</action>
+		<action name="searchRoom" class="com.action.RoomAction" method="searchRoom">
+			<result name="success">/singleRoom.jsp</result>
+		</action>
+		<action name="hotelRoomList" class="com.action.RoomAction" method="findRoomByHotelId">
+			<result name="success">/hotelRoom.jsp</result>
+		</action>
+		<action name="hotelManagerFindRoom" class="com.action.RoomAction" method="hotelManagerFindRoom">
+			<result name="roomListByHotelManager">/hotelManagerFindRoom.jsp</result>
+		</action>
+		<action name="updateRoom" class="com.action.RoomAction" method="updateRoom">
+			<result name="updateRoom" type="chain">hotelManagerFindRoom</result>
+		</action>
+		<action name="deleteRoom" class="com.action.RoomAction" method="deleteRoom">
+			<result name="deleteRoom" type="chain">hotelManagerFindRoom</result>
+		</action>
+		<action name="addRoom" class="com.action.RoomAction" method="addRoom">
+			<result name="addRoom" type="chain">hotelManagerFindRoom</result>
+		</action>
+		<action name="findUpdateRoom" class="com.action.RoomAction" method="findUpdateRoom">
+			<result name="findUpdateRoom">/updateRoom.jsp</result>
+		</action>
+		<action name="updateSaleVolumn" class="com.action.RoomAction" method="updateSaleVolumn">
+			<result name="updateSaleVolumn" type="chain">showUserOrders</result>
+		</action>
+	</package>
+	<package name="HotelManager" extends="struts-default">
+		<action name="hotelManagerLogin" class="com.action.HotelManagerAction" method="login">
+			<result name="loign_success" type="chain">searchManager</result>
+		</action>
+		<action name="searchManager" class="com.action.HotelManagerAction" method="searchManager">
+			<result name="searchManager">/hotelManager.jsp</result>
+		</action>
+		<action name="allHotelManager" class="com.action.HotelManagerAction" method="allHotelManager">
+			<result name="allHotelManager">/allHotelManager.jsp</result>
+		</action>
+		<action name="addHotelManager" class="com.action.HotelManagerAction" method="addHotelManager">
+			<result name="addHotelManager" type="chain">allHotelManager</result>
+		</action>
+	</package>
+	<package name="Hotel" extends="struts-default">
+		<action name="hotelList" class="com.action.HotelAction" method="hotelList">
+			<result name="success">/allHotel.jsp</result>
+		</action>
+		<action name="findHotel" class="com.action.HotelAction" method="findHotel">
+			<result name="hotel">/singleHotel.jsp</result>
+		</action>
+		<action name="cityHotel" class="com.action.HotelAction" method="cityHotel">
+			<result name="cityHotel">/cityHotel.jsp</result>
+			<result name="fail">/fail.jsp</result>
+		</action>
+		<action name="hotelManagerFindHotel" class="com.action.HotelAction" method="hotelManagerFindHotel">
+			<result name="hotelManagerFindHotel">/hotelManagerFindHotel.jsp</result>
+		</action>
+		<action name="updateHotel" class="com.action.HotelAction" method="updateHotel">
+			<result name="updateHotel" type="chain">hotelManagerFindHotel</result>
+		</action>
+		<action name="findHotelForAddRoom" class="com.action.HotelAction" method="findHotelForAddRoom">
+			<result name="findHotelForAddRoom" type="chain">addRoom</result>
+		</action>
+		<action name="managerHotelList" class="com.action.HotelAction" method="managerHotelList">
+			<result name="managerHotel">/managerHotel.jsp</result>
+		</action>
+		<action name="addHotel" class="com.action.HotelAction" method="addHotel">
+			<result name="addHotel" type="chain">managerHotelList</result>
+		</action>
+		<action name="findUpdateHotel" class="com.action.HotelAction" method="findUpdateHotel">
+			<result name="updateHotel">/managerUpdateHotel.jsp</result>
+		</action>
+		<action name="managerUpdateHotel" class="com.action.HotelAction" method="managerUpdateHotel">
+			<result name="managerUpdateHotel" type="chain">managerHotelList</result>
+		</action>
+	</package>
+	<package name="Order" extends="struts-default">
+		<action name="addOrder" class="com.action.OrderAction">
+			<result name="addOrderNoPay" type="chain">showUserShopCart</result>
+			<result name="addOrderPay" type="chain">updateSaleVolumn</result>
+		</action>
+		<action name="payMoney" class="com.action.OrderAction" method="payMoney">
+			<result name="payMoney" type="chain">showUserShopCart</result>
+		</action>
+		<action name="showAddMessage" class="com.action.OrderAction" method="showAddMessage">
+			<result name="showAddMessage">/showAddMessage.jsp</result>
+		</action>
+		<action name="addMessage" class="com.action.OrderAction" method="addMessage">
+			<result name="addMessage" type="chain">showUserOrders</result>
+		</action>
+		<action name="showUserOrders" class="com.action.OrderAction" method="showUserOrders">
+			<result name="userOrderList">/showUserOrders.jsp</result>
+		</action>
+		<action name="showUserShopCart" class="com.action.OrderAction" method="showUserShopCart">
+			<result name="userShopCartList">/showUserShopCart.jsp</result>
+		</action>
+		<action name="getRoomMessage" class="com.action.OrderAction" method="getRoomMessage">
+			<result name="roomMessage" type="chain">searchRoom</result>
+		</action>
+		<action name="deleteShopCart" class="com.action.OrderAction" method="deleteShopCart">
+			<result name="deleteShopCart" type="chain">showUserShopCart</result>
+		</action>
+		<action name="showHotelOrder" class="com.action.OrderAction" method="showHotelOrder">
+			<result name="showHotelOrder">/showHotelOrder.jsp</result>
+		</action>
+		<action name="allOrder" class="com.action.OrderAction" method="allOrder">
+			<result name="allOrder">/showAllOrder.jsp</result>
+		</action>
+		<action name="showExcel" class="com.action.OrderAction" method="showExcel">
+			<result name="showExcel" type="stream">
+              <param name="contentType">application/vnd.ms-excel;charset=UTF-8</param>
+              <!-- 在浏览器中打开提示窗口，要求下载还是用相关软件打开，注意attachment的使用 -->
+              <param name="contentDisposition">attachment;filename="hotelOrderExcel.xls"</param>
+              <param name="inputName">excelStream</param>
+           </result>
+		</action>
+		<action name="showOrderExcel" class="com.action.OrderAction" method="showOrderExcel">
+			<result name="showOrderExcel" type="stream">
+              <param name="contentType">application/vnd.ms-excel;charset=UTF-8</param>
+              <!-- 在浏览器中打开提示窗口，要求下载还是用相关软件打开，注意attachment的使用 -->
+              <param name="contentDisposition">attachment;filename="orderExcel.xls"</param>
+              <param name="inputName">excelStream</param>
+           </result>
+		</action>
+	</package>
+</struts>

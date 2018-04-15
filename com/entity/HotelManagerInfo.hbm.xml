@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping  package="com.entity">
+    <class name="HotelManagerInfo" >
+        <id name="staffId">
+            <generator class="assigned"/>
+        </id>
+        <property name="staffName"></property>
+        <many-to-one name="HotelInfo" class="com.entity.HotelInfo">
+        	<column name="hotelId"></column>
+        </many-to-one>
+        <property name="password"></property>
+    </class>
+</hibernate-mapping>

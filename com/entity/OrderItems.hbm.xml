@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping  package="com.entity">
+    <class name="OrderItems" >
+		<id name="orderItemId">
+			<generator class="increment"></generator>
+		</id>
+    	<property name="roomId"></property>
+    	<property name="hotelId"></property>
+    	<property name="beginTime"></property>
+        <property name="totalPrice"></property>
+        <property name="endTime"></property>
+        <property name="name"></property>
+        <property name="status"></property>
+        <property name="email"></property>
+        <property name="buyerMessage"></property>
+    </class>
+</hibernate-mapping>
